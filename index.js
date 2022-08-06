@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const MONGO_URL = process.env.MONGO_URL;
 
 app.use(express.json());
