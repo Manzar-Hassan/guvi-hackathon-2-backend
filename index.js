@@ -12,10 +12,12 @@ const PORT = process.env.PORT || 4000;
 const MONGO_URL = process.env.MONGO_URL;
 
 app.use(express.json());
-app.use(cors({
-  origin:"*",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
 async function createConnection() {
   const client = new MongoClient(MONGO_URL);
@@ -120,17 +122,18 @@ app.post("/login", async (request, response) => {
 
   if (!isUserExist) {
     response.send({ msg: "Please signup!!" });
-  } else if (password.length < 8) {
-    response.send({ msg: "password must be more than 8 characters!!" });
-  } else {
-    const storedPassword = isUserExist.password;
-    const isPasswordMatch = await bcrypt.compare(password, storedPassword);
-
-    if (isPasswordMatch) {
-      const token = jwt.sign({ id: isUserExist._id }, process.env.SECRET_KEY);
-      response.status(200).send({ msg: "login suxxessful!!" });
+    if (password.length < 8) {
+      response.send({ msg: "password must be more than 8 characters!!" });
     } else {
-      response.send({ msg: "Incorrect credentials!!" });
+      const storedPassword = isUserExist.password;
+      const isPasswordMatch = await bcrypt.compare(password, storedPassword);
+
+      if (isPasswordMatch) {
+        const token = jwt.sign({ id: isUserExist._id }, process.env.SECRET_KEY);
+        response.status(200).send({ msg: "login suxxessful!!" });
+      } else {
+        response.send({ msg: "Incorrect credentials!!" });
+      }
     }
   }
 });
