@@ -31,18 +31,18 @@ async function createConnection() {
 const client = await createConnection();
 
 // movies endpoints:
-// app.get("/", async (request, response) => {
-//   if (request.query.rating) {
-//     request.query.rating = +request.query.rating;
-//   }
+app.get("/", async (request, response) => {
+  if (request.query.rating) {
+    request.query.rating = +request.query.rating;
+  }
 
-//   const result = await client
-//     .db("Hackathon")
-//     .collection("movies")
-//     .find(request.query)
-//     .toArray();
-//   response.send(result);
-// });
+  const result = await client
+    .db("Hackathon")
+    .collection("movies")
+    .find(request.query)
+    .toArray();
+  response.send(result);
+});
 
 app.post("/add-movie", async (request, response) => {
   const data = request.body;
@@ -165,9 +165,5 @@ app.post("/add-ticket", async (request, response) => {
     ? response.send({ msg: "ticket generated sucessfully!!" })
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
-
-app.get("/", (req, res) =>
-  res.send(`Server Running`)
-);
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
