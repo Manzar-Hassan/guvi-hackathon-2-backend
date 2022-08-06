@@ -166,4 +166,8 @@ app.post("/add-ticket", async (request, response) => {
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
 
+app.get("/", (req, res) =>
+  res.send(`Server Running`)
+);
+
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
