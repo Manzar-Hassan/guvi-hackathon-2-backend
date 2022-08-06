@@ -121,7 +121,6 @@ app.post("/login", async (request, response) => {
   const isUserExist = await checkUser(username);
 
   if (!isUserExist) {
-    response.send({ msg: "Please signup!!" });
     if (password.length < 8) {
       response.send({ msg: "password must be more than 8 characters!!" });
     } else {
@@ -135,6 +134,8 @@ app.post("/login", async (request, response) => {
         response.send({ msg: "Incorrect credentials!!" });
       }
     }
+  } else {
+    response.send({msg:"please sign up!!"})
   }
 });
 
