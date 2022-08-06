@@ -128,7 +128,7 @@ app.post("/login", async (request, response) => {
 
     if (isPasswordMatch) {
       const token = jwt.sign({ id: isUserExist._id }, process.env.SECRET_KEY);
-      response.send({ msg: "login suxxessful!!" });
+      response.status(200).send({ msg: "login suxxessful!!" });
     } else {
       response.send({ msg: "Incorrect credentials!!" });
     }
