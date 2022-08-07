@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: "*",
     credentials: true,
-    methods:["GET","POST","PUT","DELETE"]
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
@@ -136,7 +136,7 @@ app.post("/login", async (request, response) => {
       }
     }
   } else {
-    response.send({msg:"please sign up!!"})
+    response.send({ msg: "please sign up!!" });
   }
 });
 
@@ -165,5 +165,28 @@ app.post("/add-ticket", async (request, response) => {
     ? response.send({ msg: "ticket generated sucessfully!!" })
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
+
+//theatre endpoints:
+app.get("/theatre", async (request, response) => {
+  const result = await client
+    .db("Hackathon")
+    .collection("theatre")
+    .find(request.query)
+    .toArray();
+  response.send(result);
+});
+
+app.post("/theatre", async (request, response) => {
+  const data = request.body;
+  const result = await client
+    .db("Hackathon")
+    .collection("theatre")
+    .insertMany(data);
+
+  result.acknowledged
+    ? response.send({ msg: "seats generated sucessfully!!" })
+    : response.status(404).send({ msg: "Something went wrong !!" });
+});
+
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
