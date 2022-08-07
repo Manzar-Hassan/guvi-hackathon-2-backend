@@ -196,8 +196,6 @@ app.put("/theatre/:id", async (request, response) => {
     request.query.id = +request.query.id;
   }
 
-  console.log(id)
-
   const result = await client
     .db("Hackathon")
     .collection("theatre")
