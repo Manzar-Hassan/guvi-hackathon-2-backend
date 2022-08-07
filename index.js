@@ -197,8 +197,8 @@ app.put("/theatre/:id", async (request, response) => {
     .updateOne({ id: id }, { $set: data });
 
   result.modifiedCount > 0
-    ? response.send({ msg: "movie updated sucessfully!!" })
-    : response.status(404).send({ msg: "movie not found" });
+    ? response.send({ msg: "seat updated sucessfully!!" })
+    : response.status(404).send({ msg: "seat not found" });
 });
 
 
