@@ -188,5 +188,18 @@ app.post("/theatre", async (request, response) => {
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
 
+app.put("/theatre/:id", async (request, response) => {
+  const { id } = request.params;
+  const data = request.body;
+  const result = await client
+    .db("Hackathon")
+    .collection("theatre")
+    .updateOne({ id: id }, { $set: data });
+
+  result.modifiedCount > 0
+    ? response.send({ msg: "movie updated sucessfully!!" })
+    : response.status(404).send({ msg: "movie not found" });
+});
+
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
