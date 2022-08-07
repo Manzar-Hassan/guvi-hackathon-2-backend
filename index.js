@@ -191,15 +191,21 @@ app.post("/theatre", async (request, response) => {
 app.put("/theatre/:id", async (request, response) => {
   const { id } = request.params;
   const data = request.body;
+
+  if (request.query.id) {
+    request.query.id = +request.query.id;
+  }
+
+  console.log(id)
+
   const result = await client
     .db("Hackathon")
     .collection("theatre")
-    .updateOne({ id: id }, { $set: data });
+    .updateOne({ id: +id }, { $set: data });
 
   result.modifiedCount > 0
     ? response.send({ msg: "seat updated sucessfully!!" })
     : response.status(404).send({ msg: "seat not found" });
 });
-
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
