@@ -123,7 +123,7 @@ app.post("/login", async (request, response) => {
 
   if (isUserExist) {
     if (password.length < 8) {
-      response.send({ msg: "password must be more than 8 characters!!" });
+      response.status(204).send({ msg: "password must be more than 8 characters!!" });
     } else {
       const storedPassword = isUserExist.password;
       const isPasswordMatch = await bcrypt.compare(password, storedPassword);
@@ -132,11 +132,11 @@ app.post("/login", async (request, response) => {
         const token = jwt.sign({ id: isUserExist._id }, process.env.SECRET_KEY);
         response.status(200).send({ msg: "login successful!!" });
       } else {
-        response.send({ msg: "Incorrect credentials!!" });
+        response.status(204).send({ msg: "Incorrect credentials!!" });
       }
     }
   } else {
-    response.send({ msg: "please sign up!!" });
+    response.status(204).send({ msg: "please sign up!!" });
   }
 });
 
