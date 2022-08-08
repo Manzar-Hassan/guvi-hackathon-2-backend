@@ -188,6 +188,30 @@ app.post("/theatre", async (request, response) => {
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
 
+app.post("/resetSeats", async (request, response) => {
+  const data = request.body;
+  const result = await client
+    .db("Hackathon")
+    .collection("theatre")
+    .updateMany({ id: { $in: data } }, { $set: { status: "" } });
+
+  result.acknowledged
+    ? response.send({ msg: "seats reset!!" })
+    : response.status(404).send({ msg: "Something went wrong !!" });
+});
+
+app.post("/consirmSeats", async (request, response) => {
+  const data = request.body;
+  const result = await client
+    .db("Hackathon")
+    .collection("theatre")
+    .updateMany({ id: { $in: data } }, { $set: { status: true } });
+
+  result.acknowledged
+    ? response.send({ msg: "seats confirmed!!" })
+    : response.status(404).send({ msg: "Something went wrong !!" });
+});
+
 app.put("/theatre/:id", async (request, response) => {
   const { id } = request.params;
   const data = request.body;
