@@ -192,10 +192,6 @@ app.put("/theatre/:id", async (request, response) => {
   const { id } = request.params;
   const data = request.body;
 
-  if (request.query.id) {
-    request.query.id = +request.query.id;
-  }
-
   const result = await client
     .db("Hackathon")
     .collection("theatre")
