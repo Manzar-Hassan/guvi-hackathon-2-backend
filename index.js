@@ -121,18 +121,18 @@ app.post("/login", async (request, response) => {
   const { username, password } = request.body;
   const isUserExist = await checkUser(username);
 
-  if (!isUserExist) {
+  if (isUserExist) {
     if (password.length < 8) {
-      response.send({ msg: "password must be more than 8 characters!!" });
+      response.status(400).send({ msg: "password must be more than 8 characters!!" });
     } else {
       const storedPassword = isUserExist.password;
       const isPasswordMatch = await bcrypt.compare(password, storedPassword);
 
       if (isPasswordMatch) {
         const token = jwt.sign({ id: isUserExist._id }, process.env.SECRET_KEY);
-        response.status(200).send({ msg: "login suxxessful!!" });
+        response.status(200).send({ msg: "login successful!!" });
       } else {
-        response.send({ msg: "Incorrect credentials!!" });
+        response.status(400).send({ msg: "Incorrect credentials!!" });
       }
     }
   } else {
