@@ -200,7 +200,7 @@ app.post("/resetSeats", async (request, response) => {
     : response.status(404).send({ msg: "Something went wrong !!" });
 });
 
-app.post("/consirmSeats", async (request, response) => {
+app.post("/confirmSeats", async (request, response) => {
   const data = request.body;
   const result = await client
     .db("Hackathon")
