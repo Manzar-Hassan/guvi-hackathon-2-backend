@@ -217,8 +217,6 @@ app.post("/confirm-payment", async (request, response) => {
     },
   });
 
-  console.log(data)
-
   const paymentDetails = {
     from: process.env.USER_MAIL,
     to: data.mail,
