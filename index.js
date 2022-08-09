@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
 
 app.use(express.json());
@@ -123,7 +124,9 @@ app.post("/login", async (request, response) => {
 
   if (isUserExist) {
     if (password.length < 8) {
-      response.status(204).send({ msg: "password must be more than 8 characters!!" });
+      response
+        .status(204)
+        .send({ msg: "password must be more than 8 characters!!" });
     } else {
       const storedPassword = isUserExist.password;
       const isPasswordMatch = await bcrypt.compare(password, storedPassword);
@@ -200,6 +203,34 @@ app.put("/theatre/:id", async (request, response) => {
   result.modifiedCount > 0
     ? response.send({ msg: "seat updated sucessfully!!" })
     : response.status(404).send({ msg: "seat not found" });
+});
+
+//payment confirmation and contactUs e-mail query
+app.post("/confirm-payment", async (request, response) => {
+  const data = request.body;
+
+  const mailTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.USER_MAIL,
+      pass: process.env.USER_PASSWORD,
+    },
+  });
+
+  console.log(data)
+
+  const paymentDetails = {
+    from: process.env.USER_MAIL,
+    to: "manzarhassan05@gmail.com",
+    subject: "testing nodemailer for the first time",
+    text: "first nodemailer mail ever",
+  };
+
+  mailTransporter.sendMail(paymentDetails, (error) => {
+    error
+      ? response.status(404).send({ msg: "payment failed!!" })
+      : response.status(200).send({ msg: "payment successful!!" });
+  });
 });
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
