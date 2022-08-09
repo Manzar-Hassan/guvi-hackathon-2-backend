@@ -221,9 +221,9 @@ app.post("/confirm-payment", async (request, response) => {
 
   const paymentDetails = {
     from: process.env.USER_MAIL,
-    to: "testmail@gmail.com",
-    subject: "testing nodemailer for the first time",
-    text: "first nodemailer mail ever",
+    to: data.mail,
+    subject: "Live Tv Payment",
+    text: data.msg,
   };
 
   mailTransporter.sendMail(paymentDetails, (error) => {
